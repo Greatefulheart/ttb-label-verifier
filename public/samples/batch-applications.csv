@@ -1,0 +1,10 @@
+filename,beverage_type,brand_name,class_type,alcohol_content,net_contents,bottler,country_of_origin,expected
+01-old-tom-clean.png,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,All fields match
+02-stones-throw-case.png,spirits,Stone's Throw,Straight Rye Whiskey,50% Alc./Vol.,750 mL,"Stone's Throw Spirits, Frankfort, KY",,Brand differs only by capitalization - should pass with a note
+03-wrong-abv.png,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,Label says 40% but application says 45% - should fail
+04-warning-title-case.png,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,'Government Warning' not in all caps - should fail
+05-warning-reworded.png,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,Warning text altered - should fail
+06-warning-not-bold.png,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,Warning heading not bold - should be flagged
+07-chateau-import-wine.png,wine,Château Belle Rive,Red Bordeaux Wine,13.5%,750 mL,"Belle Rive Imports, Napa, CA",France,Imported wine with country of origin - should pass
+08-harbor-ipa-beer.png,beer,Harbor Light,India Pale Ale,6.8% ABV,355 mL,"Harbor Light Brewing Co., Portland, ME",,"Net contents given as 355 mL on the form vs 12 fl oz on the label - equivalent, should pass"
+09-old-tom-phone-photo.jpg,spirits,OLD TOM DISTILLERY,Kentucky Straight Bourbon Whiskey,45% Alc./Vol. (90 Proof),750 mL,"Old Tom Distillery, Bardstown, Kentucky",,Tilted photo with glare - should still pass or ask for review

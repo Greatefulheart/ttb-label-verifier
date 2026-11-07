@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Label Check — TTB label verification prototype</title>
+  <meta name="description" content="Prototype tool that reads an alcohol beverage label image and checks it against the application data." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a4480'/><path d='M9 17l5 5 9-11' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">✓</span>
+        <div>
+          <h1>Label Check</h1>
+          <p class="sub">Compare a label image to its application — prototype</p>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Choose how many labels to check">
+        <button role="tab" id="tab-single" aria-controls="view-single" aria-selected="true">Check one label</button>
+        <button role="tab" id="tab-batch" aria-controls="view-batch" aria-selected="false">Check many labels</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <!-- ============ ONE LABEL ============ -->
+    <section id="view-single" role="tabpanel" aria-labelledby="tab-single">
+      <div class="grid">
+        <div class="card">
+          <h2><span class="step">1</span> Label image</h2>
+          <label class="drop" id="single-drop">
+            <input type="file" id="single-file" accept="image/*" />
+            <span class="drop-text"><strong>Choose an image</strong> or drag it here</span>
+            <span class="hint">JPG or PNG. Phone photos are fine.</span>
+          </label>
+          <figure class="preview" id="single-preview" hidden>
+            <img id="single-img" alt="The label image you chose" />
+            <figcaption id="single-filename"></figcaption>
+          </figure>
+          <div class="examples">
+            <label for="example-select">Or try an example label:</label>
+            <select id="example-select"><option value="">Choose an example…</option></select>
+          </div>
+        </div>
+
+        <form class="card" id="single-form" novalidate>
+          <h2><span class="step">2</span> What the application says</h2>
+          <p class="hint">Type the values from the COLA application. Leave a box empty to skip that check.</p>
+          <div id="fields"></div>
+          <p class="note">The <strong>Government Warning</strong> is always checked against the required wording.</p>
+          <div class="actions">
+            <button type="submit" class="btn primary big" id="check-btn">
+              <span class="step light">3</span> Check label
+            </button>
+            <button type="button" class="btn link" id="clear-btn">Start over</button>
+          </div>
+          <p class="form-error" id="single-error" role="alert" hidden></p>
+        </form>
+      </div>
+
+      <section id="single-results" class="results" aria-live="polite" tabindex="-1"></section>
+    </section>
+
+    <!-- ============ MANY LABELS ============ -->
+    <section id="view-batch" role="tabpanel" aria-labelledby="tab-batch" hidden>
+      <div class="grid">
+        <div class="card">
+          <h2><span class="step">1</span> Label images</h2>
+          <label class="drop" id="batch-drop">
+            <input type="file" id="batch-files" accept="image/*" multiple />
+            <span class="drop-text"><strong>Choose images</strong> or drag them here</span>
+            <span class="hint">Select as many as you like (hundreds are fine).</span>
+          </label>
+          <p class="count" id="batch-image-count">No images chosen yet.</p>
+        </div>
+        <div class="card">
+          <h2><span class="step">2</span> Application data</h2>
+          <p class="hint">A spreadsheet saved as <strong>CSV</strong>, one row per label. The <code>filename</code> column must match the image file names.</p>
+          <label class="drop small" id="csv-drop">
+            <input type="file" id="batch-csv" accept=".csv,text/csv" />
+            <span class="drop-text"><strong>Choose CSV file</strong></span>
+          </label>
+          <p class="count" id="batch-csv-count">No CSV chosen yet.</p>
+          <p class="row-links">
+            <a href="#" id="template-link">Download a blank CSV template</a>
+            <span aria-hidden="true">·</span>
+            <button type="button" class="btn link" id="load-example-batch">Load the example batch</button>
+          </p>
+        </div>
+      </div>
+      <div class="actions center">
+        <button type="button" class="btn primary big" id="batch-run" disabled>
+          <span class="step light">3</span> Check all labels
+        </button>
+        <button type="button" class="btn" id="batch-stop" hidden>Stop</button>
+      </div>
+      <p class="form-error" id="batch-error" role="alert" hidden></p>
+
+      <section id="batch-results" class="results" aria-live="polite" hidden>
+        <div class="progress" id="batch-progress">
+          <div class="bar"><span id="batch-bar"></span></div>
+          <p id="batch-progress-text"></p>
+        </div>
+        <div class="tallies" id="batch-tallies"></div>
+        <div class="table-tools">
+          <div class="filters" role="group" aria-label="Show">
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="fail" aria-pressed="false">Problems</button>
+            <button type="button" class="chip" data-filter="review" aria-pressed="false">Needs review</button>
+            <button type="button" class="chip" data-filter="pass" aria-pressed="false">Passed</button>
+          </div>
+          <button type="button" class="btn" id="batch-export" disabled>Download results (CSV)</button>
+        </div>
+        <table class="batch-table">
+          <thead><tr><th scope="col">Label image</th><th scope="col">Brand</th><th scope="col">Result</th><th scope="col">Details</th></tr></thead>
+          <tbody id="batch-rows"></tbody>
+        </table>
+      </section>
+    </section>
+
+    <footer class="foot">
+      <p>Prototype for evaluation only. Images are read <strong>on this computer</strong> — nothing is uploaded or stored.
+      Results support, and do not replace, an agent's judgment.</p>
+      <p id="engine-status" class="engine">Loading the label reader…</p>
+    </footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
