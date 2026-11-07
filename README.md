@@ -4,7 +4,7 @@ A web app that reads an alcohol beverage label image and checks it against the
 data on the COLA application, the routine "does the label match the form?"
 work that takes up much of a compliance agent's day.
 
-**Live app:** _see the deployed URL in the repository description_
+**Live app:** https://ubiquitous-pony-f43793.netlify.app/
 
 - **Check one label:** pick an image, type in the application values, press **Check label**. Results take about 1 second.
 - **Check many labels:** drop in hundreds of images plus one CSV of application data. You get a running tally, a sortable table and a downloadable results CSV.
