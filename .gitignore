@@ -3,3 +3,4 @@ dist/
 # copied from node_modules by `npm run assets`
 public/tesseract/
 .DS_Store
+.netlify
